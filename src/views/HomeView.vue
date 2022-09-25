@@ -23,26 +23,16 @@
 import SingleItem from "../components/SingleItem";
 import { ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
+import getItems from "@/composables/getItems";
+
 export default {
   components: { SingleItem },
   setup() {
-    let api = "https://api.escuelajs.co/api/v1/products";
-
-    let items = ref([]);
     let search = ref("");
 
-    let getItems = async () => {
-      try {
-        let res = await fetch(api);
-        if (res.status === 404) {
-          throw new Error("url not found");
-        }
-        let data = await res.json();
-        items.value = data;
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
+    let { items, error, load } = getItems();
+
+    load();
 
     let searchItems = computed(() => {
       return items.value.filter((item) => {
@@ -50,9 +40,7 @@ export default {
       });
     });
 
-    getItems();
-
-    return { items, search, searchItems };
+    return { items, search, searchItems, error };
   },
 };
 </script>
