@@ -4,10 +4,16 @@
       {{ item.title }}
       <p>Category : {{ item.category.name }}</p>
       <p>Price : ${{ item.price }}.00</p>
-      <p class="viewMore">View More</p>
+      <p class="viewMore">
+        <router-link
+          :to="{ name: 'itemDetail', params: { id: item.id } }"
+          class="text-decoration-none viweMore"
+          >View More</router-link
+        >
+      </p>
     </div>
     <div>
-      <img :src="item.category.image" width="100" alt="" />
+      <img :src="item.images[2]" class="img-fluid rounded" width="120" alt="" />
     </div>
   </div>
 </template>
@@ -31,13 +37,13 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.viewMore {
+a {
   cursor: pointer;
   user-select: none;
   color: yellow;
   transition: 0.2s ease;
 }
-.viewMore:hover {
+a:hover {
   color: rgba(246, 255, 0, 0.754);
 }
 </style>

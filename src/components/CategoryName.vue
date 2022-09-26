@@ -34,7 +34,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .categoryLink {
   text-decoration: none;
   color: white;
