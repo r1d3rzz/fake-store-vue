@@ -2,6 +2,7 @@
   <div class="itemContainer">
     <div style="text-align: start">
       {{ item.title }}
+      <p>Category : {{ item.category.name }}</p>
       <p>Price : ${{ item.price }}.00</p>
       <p class="viewMore">View More</p>
     </div>
