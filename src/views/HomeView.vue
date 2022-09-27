@@ -1,5 +1,5 @@
 <template>
-  <h2>Total Products ({{ items.length }})</h2>
+  <h2 v-if="items.length">Total Products ({{ items.length }})</h2>
 
   <div class="container" v-if="items.length">
     <div class="items">
@@ -21,10 +21,13 @@
     </div>
   </div>
 
-  <div v-else>loading...</div>
+  <div v-else>
+    <LoadingVew />
+  </div>
 </template>
 
 <script>
+import LoadingVew from "../components/LoadingVew";
 import CategoryName from "../components/CategoryName";
 import SingleItem from "../components/SingleItem";
 import { ref } from "@vue/reactivity";
@@ -33,6 +36,7 @@ import getItems from "@/composables/getItems";
 
 export default {
   components: {
+    LoadingVew,
     CategoryName,
     SingleItem,
   },

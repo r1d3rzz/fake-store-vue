@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h2>Category - {{ category }} ({{ filterItems.length }})</h2>
+    <h2 v-if="filterItems.length">
+      Category - {{ category }} ({{ filterItems.length }})
+    </h2>
 
-    <div class="">
+    <div class="" v-if="items.length">
       <input
         type="text"
         placeholder="Search ...."
@@ -23,17 +25,21 @@
       </div>
     </div>
 
-    <div v-else>loading...</div>
+    <div v-else>
+      <LoadingVew />
+    </div>
   </div>
 </template>
 
 <script>
+import LoadingVew from "../components/LoadingVew";
 import CategoryName from "../components/CategoryName";
 import SingleItem from "../components/SingleItem";
 import getItems from "@/composables/getItems";
 import { computed, ref } from "@vue/runtime-core";
 export default {
   components: {
+    LoadingVew,
     CategoryName,
     SingleItem,
   },
