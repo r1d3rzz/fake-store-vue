@@ -39,12 +39,20 @@
         </div>
         <div class="card-footer d-flex justify-content-between">
           <div>
-            <button class="btn btn-sm btn-warning" @click="deleteItem">
-              Delete
-            </button>
+            <div>
+              <button class="btn btn-sm btn-danger" :disabled="uploading">
+                <div v-if="uploading">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  Destroying
+                </div>
+                <div v-else @click="deleteItem">Delete</div>
+              </button>
+            </div>
           </div>
           <div>
-            <button class="btn btn-sm btn-danger" @click="goBack">Back</button>
+            <button class="btn btn-sm btn-primary" @click="goBack">Back</button>
           </div>
         </div>
       </div>
@@ -56,12 +64,15 @@
 import getItem from "@/composables/getItem";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+import { db } from "../firebase/config";
+import { ref } from "@vue/reactivity";
 
 export default {
   props: ["id"],
   setup(props) {
     let router = useRouter();
     let { item, error, load } = getItem(props.id);
+    let uploading = ref(false);
 
     load();
 
@@ -74,6 +85,7 @@ export default {
     };
 
     let deleteItem = async () => {
+      uploading.value = true;
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -84,19 +96,21 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          fetch("http://localhost:3000/items/" + props.id, {
-            method: "DELETE",
-          })
+          db.collection("items")
+            .doc(props.id)
+            .delete()
             .then((_) => {
               return router.push({ name: "home" });
             })
             .catch((err) => console.log(err));
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        } else {
+          uploading.value = false;
         }
       });
     };
 
-    return { item, goBack, addToCart, deleteItem };
+    return { item, goBack, addToCart, deleteItem, uploading };
   },
 };
 </script>

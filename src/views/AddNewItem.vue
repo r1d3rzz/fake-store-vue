@@ -51,7 +51,15 @@
 
         <div class="d-flex justify-content-between">
           <div>
-            <button class="btn btn-sm btn-primary">Upload</button>
+            <button class="btn btn-sm btn-primary" :disabled="uploading">
+              <div v-if="uploading">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                Uploading
+              </div>
+              <div v-else>Upload</div>
+            </button>
           </div>
           <div>
             <button class="btn btn-sm btn-danger" @click="back">Back</button>
@@ -65,6 +73,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
+import { db } from "@/firebase/config";
 import Swal from "sweetalert2";
 export default {
   setup() {
@@ -73,23 +82,26 @@ export default {
     let price = ref("");
     let description = ref("");
     let category = ref("");
+    let uploading = ref(false);
 
     let addItem = async () => {
-      fetch("http://localhost:3000/items", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title.value,
-          price: price.value,
-          description: description.value,
-          category: {
-            id: Math.random(),
-            name: category.value,
-            image: "",
-          },
-          images: [],
-        }),
-      })
+      let addnewValue = {
+        title: title.value,
+        price: price.value,
+        description: description.value,
+        category: {
+          id: Math.random(),
+          name: category.value,
+          image: "",
+        },
+        images: [],
+      };
+
+      uploading.value = true;
+
+      await db
+        .collection("items")
+        .add(addnewValue)
         .then(() => {
           Swal.fire({
             position: "top-end",
@@ -107,7 +119,7 @@ export default {
       return router.go(-1);
     };
 
-    return { back, title, price, category, description, addItem };
+    return { back, title, price, category, description, addItem, uploading };
   },
 };
 </script>

@@ -1,20 +1,18 @@
+import { db } from "@/firebase/config";
 import { ref } from "vue";
 
 let getItems = () => {
   let items = ref([]);
   let error = null;
-  let api = "http://localhost:3000/items";
 
   let load = async () => {
     try {
-      let res = await fetch(api);
-      if (res.status === 404) {
-        throw new Error("url not found");
-      }
-      let data = await res.json();
-      items.value = data;
+      let res = await db.collection("items").get();
+      items.value = res.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
     } catch (err) {
-      console.log(err.message);
+      error.value = err.message;
     }
   };
 
