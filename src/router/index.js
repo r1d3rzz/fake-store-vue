@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import CategoryView from "../views/CategoryView.vue";
 import ItemDetail from "../views/ItemDetail.vue";
+import AddNewItem from "../views/AddNewItem.vue";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     name: "itemDetail",
     component: ItemDetail,
     props: true,
+  },
+  {
+    path: "/item/add",
+    name: "itemAdd",
+    component: AddNewItem,
   },
 ];
 

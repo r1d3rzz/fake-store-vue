@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "title": "New Item",
+      "price": "32423",
+      "description": "Thifdsa;fdsa",
+      "category": {
+        "id": 0.1868273906603526,
+        "name": "Shoe",
+        "image": ""
+      },
+      "images": [],
+      "id": 1
+    }
+  ]
+}

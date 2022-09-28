@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5">
+  <div class="mt-1">
     <div class="col-md-7 mx-auto">
       <div class="card">
         <div class="card-header bg-primary text-white fs-4">
@@ -37,7 +37,12 @@
             </button>
           </div>
         </div>
-        <div class="card-footer d-flex justify-content-end">
+        <div class="card-footer d-flex justify-content-between">
+          <div>
+            <button class="btn btn-sm btn-warning" @click="deleteItem">
+              Delete
+            </button>
+          </div>
           <div>
             <button class="btn btn-sm btn-danger" @click="goBack">Back</button>
           </div>
@@ -50,6 +55,7 @@
 <script>
 import getItem from "@/composables/getItem";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 export default {
   props: ["id"],
@@ -67,7 +73,30 @@ export default {
       alert("added Successfully");
     };
 
-    return { item, goBack, addToCart };
+    let deleteItem = async () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch("http://localhost:3000/items/" + props.id, {
+            method: "DELETE",
+          })
+            .then((_) => {
+              return router.push({ name: "home" });
+            })
+            .catch((err) => console.log(err));
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
+    };
+
+    return { item, goBack, addToCart, deleteItem };
   },
 };
 </script>

@@ -3,7 +3,7 @@ import { ref } from "vue";
 let getItem = (id) => {
   let item = ref([]);
   let error = ref(null);
-  let api = "https://api.escuelajs.co/api/v1/products";
+  let api = "http://localhost:3000/items";
 
   let load = async () => {
     try {

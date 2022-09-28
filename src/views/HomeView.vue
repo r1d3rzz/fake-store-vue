@@ -1,5 +1,13 @@
 <template>
-  <h2 v-if="items.length">Total Products ({{ items.length }})</h2>
+  <div class="my-3">
+    <span class="fs-3" v-if="items.length"
+      >Total Products ({{ items.length }})</span
+    >
+    <span class="fs-3 mx-2">|</span>
+    <span class="fs-3 text-primary">
+      <router-link :to="{ name: 'itemAdd' }">Add Item</router-link>
+    </span>
+  </div>
 
   <div class="container" v-if="items.length">
     <div class="items">
@@ -71,5 +79,8 @@ export default {
   justify-content: space-between;
   width: 600px;
   margin: 0 auto;
+}
+a {
+  text-decoration: none;
 }
 </style>
