@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <h2 v-if="filterItems.length">
       Category - {{ category }} ({{ filterItems.length }})
     </h2>

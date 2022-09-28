@@ -73,7 +73,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
-import { db } from "@/firebase/config";
+import { db, timestamp } from "@/firebase/config";
 import Swal from "sweetalert2";
 export default {
   setup() {
@@ -95,6 +95,7 @@ export default {
           image: "",
         },
         images: [],
+        created_at: timestamp(),
       };
 
       uploading.value = true;

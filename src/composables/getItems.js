@@ -7,7 +7,10 @@ let getItems = () => {
 
   let load = async () => {
     try {
-      let res = await db.collection("items").get();
+      let res = await db
+        .collection("items")
+        .orderBy("created_at", "desc")
+        .get();
       items.value = res.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
